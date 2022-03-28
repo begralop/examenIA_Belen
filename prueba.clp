@@ -1,51 +1,16 @@
-(deffacts BH
-(numeros 5 3 8 14 7 pasos)
-(objetivo 21)
-
+(deffacts inicial
+	(robot posicion 1 cajas 0)
+	(paletnaranjas posicion 2 stock 10)
+	(paletmanzanas posicion 3 stock 10)
+	(paletcaquis posicion 4 stock 10)
+	(paletuva posicion 5 stock 10)
+	(maxcajasrobot 3)
+	(pedido naranjas 2 manzanas 3 uva 1)
 )
 
-(defrule suma
-?aux <-(numeros $?list1 ?num1 $?list3 ?num2 $?list2 pasos $?pasos)
-=>
-;(retract ?aux)
-(assert (numeros $?list1 (+ ?num1 ?num2) $?list3  $?list2 pasos $?pasos ?num1 suma ?num2 igual a (+ ?num1 ?num2)))
-(printout t "SUMA = " (+ ?num1 ?num2) crlf)
-)
-
-(defrule resta
-?aux <-(numeros $?list1 ?num1 $?list3 ?num2 $?list2 pasos $?pasos)
-(test (> (- ?num1 ?num2) 0))
-=>
-;(retract ?aux)
-(assert (numeros $?list1 (- ?num1 ?num2) $?list3  $?list2 pasos $?pasos ?num1 resta ?num2 igual a (- ?num1 ?num2)))
-(printout t "RESTA = " (- ?num1 ?num2) crlf)
-)
-
-(defrule multiplicacion
-?aux <-(numeros $?list1 ?num1 $?list3 ?num2 $?list2 pasos $?pasos)
-=>
-;(retract ?aux)
-(assert (numeros $?list1 (* ?num1 ?num2) $?list3  $?list2 pasos $?pasos ?num1 multiplicacion ?num2 igual a(* ?num1 ?num2)))
-(printout t "MULTIPLICACION = " (* ?num1 ?num2) crlf)
-)
-
-(defrule division
-?aux <-(numeros $?list1 ?num1 $?list3 ?num2 $?list2 pasos $?pasos)
-(integerp =(div ?num1 ?num2))
-(test (= (mod ?num1 ?num2) 0))
-
-=>
-;(retract ?aux)
-(assert (numeros $?list1 (/ ?num1 ?num2) $?list3  $?list2 pasos $?pasos ?num1 division ?num2 igual a (/ ?num1 ?num2)))
-(printout t "DIVISION = " (/ ?num1 ?num2) crlf)
-)
-
-(defrule meta
-(declare (salience 100))
-(numeros $?list)
-(objetivo ?obj)
-(test (neq FALSE (member$ ?obj $?list)))
-=>
-(printout t "FIN" crlf)
-(halt)
+(defrule moverderecha
+	(robot ?posicionrobot cajas ?cajas)
+	(test (<= ?cajas ?maxcajasrobot))
+	=>
+	(assert (robot (+ ?xrobot 1) ?yrobot ?paqueterecogido))
 )
