@@ -1,5 +1,5 @@
 (deffacts inicial
-	(robot posicion 1 cajas 0)
+	(robot posicion 1 cajasnaranjas 0 cajasmanzanas 0 cajascaquis 0 cajasuvas 0 cajastotales 0)
 	(paletnaranjas posicion 2 stock 10)
 	(paletmanzanas posicion 3 stock 10)
 	(paletcaquis posicion 4 stock 10)
@@ -10,10 +10,10 @@
 )
 
 (defrule desplazarse-drc 
-	(robot ?posicionrobot cajas ?cajas)
+	(robot ?posicionrobot cajasnaranjas ?cajasnaranjas cajasmanzanas ?cajasmanzanas cajascaquis ?cajascaquis cajasuvas ?cajasuvas cajastotales ?cajastotales)
 	(test (<= ?posicionrobot 4))
 	=>
-	(assert (robot (+ ?posicionrobot 1) cajas ?cajas))
+	(assert (robot (+ ?posicionrobot 1) cajasnaranjas ?cajasnaranjas cajasmanzanas ?cajasmanzanas cajascaquis ?cajascaquis cajasuvas ?cajasuvas cajastotales ?cajastotales))
 )
 
 (defrule desplazarse-izq 
@@ -85,6 +85,47 @@
 		
 )	
 
+(defrule comprobarstocknaranjas
+	(declare (salience 50))
+	(paletnaranjas posicion ?posicion stock ?stock)
+	(test (= ?stock 0))
+	=>
+	(halt)
+	(printout t "No hay stock de naranjas" crlf)
+)
+
+(defrule comprobarstockmanzanas
+	(declare (salience 50))
+	(paletmanzanas posicion ?posicion stock ?stock)
+	(test (= ?stock 0))
+	=>
+	(halt)
+	(printout t "No hay stock de manzanas" crlf)
+)
+
+(defrule comprobarstockcaquis
+	(declare (salience 50))
+	(paletcaquos posicion ?posicion stock ?stock)
+	(test (= ?stock 0))
+	=>
+	(halt)
+	(printout t "No hay stock de caquis" crlf)
+)
+
 (defrule comprobarstockuvas
+	(declare (salience 50))
 	(paletuvas posicion ?posicion stock ?stock)
 	(test (= ?stock 0))
+	=>
+	(halt)
+	(printout t "No hay stock de uvas" crlf)
+)
+
+(defrule meta
+	(declare (salience 100))
+	(lineapedido posicion ?posicion cajasapiladas ?cajasapiladas)
+	(pedido naranjas ?naranjas manzanas ?manzanas uva ?uva)
+	
+	
+	
+)
